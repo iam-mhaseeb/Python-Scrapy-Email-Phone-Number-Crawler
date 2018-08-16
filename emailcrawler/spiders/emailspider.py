@@ -14,4 +14,6 @@ class EmailspiderSpider(scrapy.Spider):
             yield scrapy.Request("{}{}".format(url, query))
 
     def parse(self, response):
-        
+        links_to_follow = response.css("h3.r a::attr(href)").extract()
+        print("---------------------")
+        print(links_to_follow)
