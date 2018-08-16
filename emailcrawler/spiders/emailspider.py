@@ -29,7 +29,11 @@ class EmailspiderSpider(scrapy.Spider):
             "url": response.url,
             "emails": emails,
             "phone numbers": phone_no
-            }
+        }
+        next_pages_urls = response.css("#foot table a::attr(href)").extract()  
+        for url in next_pages_urls:
+            yield scrapy.Request(
+                url=url, callback=self.parse_email, dont_filter=True)
 
     def extract_email(self, html_as_str):
         return re.findall(r'[\w\.-]+@[\w\.-]+', html_as_str)
