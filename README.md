@@ -22,16 +22,13 @@ Start the search with a keyword. I used "contacts of ceos in Pakistan" as an exa
   or
   scrapy crawl emailspider -o csv.json  
   ```
-<br>
-![](input.png)
-<br><br>
   
+![](input.png)
+
 The search and crawling process will take quite a while as it retrieves maximum results from Google & try to crawl all of them.
 After the process finished, you can see output in specified file
 
-<br>
 ![](output.png)
-<br>
 
 ## Built With
 
