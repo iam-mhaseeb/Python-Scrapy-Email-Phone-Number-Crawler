@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import sys
+import re
 
 
 class EmailspiderSpider(scrapy.Spider):
@@ -14,6 +15,24 @@ class EmailspiderSpider(scrapy.Spider):
             yield scrapy.Request("{}{}".format(url, query))
 
     def parse(self, response):
-        links_to_follow = response.css("h3.r a::attr(href)").extract()
-        print("---------------------")
-        print(links_to_follow)
+        url_to_follow = response.css("h3.r a::attr(href)").extract()
+        url_to_follow = [url.replace('/url?q=', '') for url in url_to_follow]
+        for url in url_to_follow:
+            yield scrapy.Request(
+                url=url, callback=self.parse_email, dont_filter=True)
+
+    def parse_email(self, response):
+        html_str = response.text
+        emails = self.extract_email(html_str)
+        phone_no = self.extract_phone_number(html_str)
+        yield{
+            "url": response.url,
+            "emails": emails,
+            "phone numbers": phone_no
+            }
+
+    def extract_email(self, html_as_str):
+        return re.findall(r'[\w\.-]+@[\w\.-]+', html_as_str)
+
+    def extract_phone_number(self, html_as_str):
+        return re.findall(r'\+\d{2}\s?0?\d{10}', html_as_str) 
