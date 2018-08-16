@@ -20,7 +20,7 @@ Start the search with a keyword. I used "contacts of ceos in Pakistan" as an exa
   ```python
   scrapy crawl emailspider -o output.json
   or
-  scrapy crawl emailspider -o csv.json  
+  scrapy crawl emailspider -o output.csv  
   ```
   
 ![](input.png)
